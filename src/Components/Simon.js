@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
+import SimonButton from './SimonButton';
+import {generateOrder, audioSources, processInput, playOrder } from './SimonEngine';
 
 
-const audioSources = [  "https://s3.amazonaws.com/freecodecamp/simonSound1.mp3",
-                        "https://s3.amazonaws.com/freecodecamp/simonSound2.mp3",
-                        "https://s3.amazonaws.com/freecodecamp/simonSound3.mp3",
-                        "https://s3.amazonaws.com/freecodecamp/simonSound4.mp3" ];
 
 
 export default class Simon extends Component {
@@ -14,51 +12,25 @@ export default class Simon extends Component {
 
         this.state = {
             counterStep: 1,
-            currentOrder: [Math.floor(Math.random() * audioSources.length)],
+            currentOrder: generateOrder([]),
             currentInput: []
         }
-    }
-
-
-    generateOrder(currentOrder) {
-        currentOrder.push( Math.floor( Math.random() * audioSources.length ) );
-        //return (new Array(counterStep)).fill(0).map( (e,i) => Math.floor( Math.random() * audioSources.length ));
-        return currentOrder;
     }
 
     handleInput(value) {
         const { currentOrder, currentInput } = this.state;
         currentInput.push(value);
-        let newCurrentOrder = Array.from(currentOrder);
-
-        //Si gano el step
-        if( currentOrder.every( (e,i) => e === currentInput[i]) ) {
-            currentInput.splice(0,currentInput.length);
-            newCurrentOrder =  Array.from(this.generateOrder(currentOrder));
-        }
-        //Si le pifio a la tecla
-        else if( !currentInput.every( (e,i) => e===currentOrder[i]) ) {
-            currentInput.splice(0,currentInput.length);
-        }
+        const { order: newOrder, input: newInput} = processInput(currentInput, currentOrder);
 
         this.setState( {
             ...this.state,
-            currentInput: currentInput,
-            currentOrder: newCurrentOrder
+            currentInput: newInput,
+            currentOrder: newOrder
         });
     }
 
     componentDidUpdate(prevProps, prevState) {
-        this.playOrder();
-    }
-
-    playOrder() {
-        const { currentOrder } = this.state;
-        currentOrder.forEach( (e,i) => {
-            setTimeout( () => {
-                (new Audio(audioSources[e])).play();
-            }, 1000*i);
-        });
+        //playOrder(this.state.currentOrder);
     }
 
 
@@ -91,28 +63,5 @@ export default class Simon extends Component {
     }
 }
 
-class SimonButton extends Component {
 
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            highlighted: false,
-        }
-    }
-
-    handleClick(e) {
-        const { audioSrc, onInput, value } = this.props;
-        (new Audio(audioSrc)).play();
-        onInput(value);
-    }
-
-    render() {
-        return (
-            <div>
-                <button onClick={this.handleClick.bind(this)}>asdasd</button>
-            </div>
-        )
-    }
-}
 
