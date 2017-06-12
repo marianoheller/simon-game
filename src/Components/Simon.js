@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import SimonButton from './SimonButton';
-import {generateOrder, audioSources, processInput, playOrder } from './SimonEngine';
+import ControlBoard from './ControlBoard';
+import {generateOrder, audioSources, processInput } from './SimonEngine';
 
 
 
@@ -13,30 +14,66 @@ export default class Simon extends Component {
         this.state = {
             counterStep: 1,
             currentOrder: generateOrder([]),
-            currentInput: []
+            currentInput: [],
+            strictMode: false,
+            isOn: false,
+            isStarted: false,
         }
     }
 
+    toggleOn() {
+        this.setState( {
+            ...this.state,
+            isOn: !this.state.isOn
+        })
+    }
+
+    toggleStrictMode() {
+        this.setState( {
+            ...this.state,
+            strictMode: !this.state.strictMode
+        })
+    }
+
+    toggleIsStarted() {
+        this.setState( {
+            ...this.state,
+            isStarted: !this.state.isStarted
+        })
+    }
+
     handleInput(value) {
-        const { currentOrder, currentInput } = this.state;
+        const { currentOrder, currentInput, counterStep: stepN, strictMode: strict } = this.state;
         currentInput.push(value);
-        const { order: newOrder, input: newInput} = processInput(currentInput, currentOrder);
+        const { 
+            order: newOrder, 
+            input: newInput,
+            step: newStep
+        } = processInput(currentInput, currentOrder, stepN, strict);
 
         this.setState( {
             ...this.state,
             currentInput: newInput,
-            currentOrder: newOrder
+            currentOrder: newOrder,
+            counterStep: newStep
         });
     }
 
-    componentDidUpdate(prevProps, prevState) {
-        //playOrder(this.state.currentOrder);
-    }
-
-
     render() {
 
-        const buttons = (new Array(4)).fill(0).map( (e,i) => 
+        const widgetHandlers = {
+            onStart: this.toggleIsStarted.bind(this),
+            onOnOff: this.toggleOn.bind(this),
+            onStrict: this.toggleStrictMode.bind(this)
+        };
+
+        const boardState = {
+            strict: this.state.strictMode,
+            isOn: this.state.isOn,
+            isStarted: this.state.isStarted
+        };
+
+        const simonButtons = (new Array(4)).fill(0).map( (e,i) => 
         <SimonButton 
             key={`button${i}`} 
             id={`button${i}`}  
@@ -48,15 +85,20 @@ export default class Simon extends Component {
         return (
             <div className="pure-g">
                 <div className="pure-u-1">
-                    <p>Step Nº: {this.state.counterStep}</p>
                     <div>
                         {this.state.currentOrder.join(",")}
                     </div>
                     <div>
                         {this.state.currentInput.join(",")}
                     </div>
-                    
-                    {buttons}
+                    <div>
+                        <ControlBoard 
+                        boardState={boardState} 
+                        handlers={widgetHandlers} 
+                        step={this.state.counterStep}>
+                        </ControlBoard>
+                    </div>
+                    { simonButtons }
                 </div>
             </div>
         )

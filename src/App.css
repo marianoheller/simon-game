@@ -2,3 +2,6 @@
   text-align: center;
 }
 
+.simon-button-container {
+  display: inline-block;
+}
