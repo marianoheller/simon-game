@@ -3,7 +3,12 @@ import SimonButton from './SimonButton';
 import ControlBoard from './ControlBoard';
 import {generateOrder, audioSources, processInput } from './SimonEngine';
 
-
+const colors = [
+    "red",
+    "blue",
+    "green",
+    "yellow"
+];
 
 
 export default class Simon extends Component {
@@ -15,6 +20,7 @@ export default class Simon extends Component {
             counterStep: 1,
             currentOrder: generateOrder([]),
             currentInput: [],
+            playingAudioSource: false,
             strictMode: false,
             isOn: false,
             isStarted: false,
@@ -42,6 +48,13 @@ export default class Simon extends Component {
         })
     }
 
+    playingAudioSource(srcIndex) {
+        this.setState( {
+            ...this.state,
+            playingAudioSource: srcIndex,
+        })
+    }
+
     handleInput(value) {
         const { currentOrder, currentInput, counterStep: stepN, strictMode: strict } = this.state;
         currentInput.push(value);
@@ -49,7 +62,7 @@ export default class Simon extends Component {
             order: newOrder, 
             input: newInput,
             step: newStep
-        } = processInput(currentInput, currentOrder, stepN, strict);
+        } = processInput(currentInput, currentOrder, stepN, strict, this.playingAudioSource.bind(this));
 
         this.setState( {
             ...this.state,
@@ -70,15 +83,17 @@ export default class Simon extends Component {
         const boardState = {
             strict: this.state.strictMode,
             isOn: this.state.isOn,
-            isStarted: this.state.isStarted
+            isStarted: this.state.isStarted,
         };
 
-        const simonButtons = (new Array(4)).fill(0).map( (e,i) => 
+        const simonButtons = (new Array(colors.length)).fill(0).map( (e,i) => 
         <SimonButton 
             key={`button${i}`} 
             id={`button${i}`}  
             value={i} 
+            color={colors[i]}
             audioSrc={audioSources[i]}
+            playing={ playingAudioSource===i }
             onInput={this.handleInput.bind(this)}
         ></SimonButton>);
 

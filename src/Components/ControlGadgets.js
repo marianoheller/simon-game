@@ -51,10 +51,17 @@ export class StartButton extends Component {
 
 export class StrictButton extends Component {
 
+    getDisabled() {
+        return this.props.disabled ? "disabled" : "";
+    }
+
     render() {
         const { disabled } = this.props;
         return (
             <div className="pure-g control-button-container">
+                <div className="pure-u-1">
+                    <Led color="red"></Led>
+                </div>
                 <div className="pure-u-1">
                     <button onClick={this.props.onStrict} className="control-button strict-button" disabled={disabled} ></button>
                 </div>
@@ -62,6 +69,36 @@ export class StrictButton extends Component {
                     Strict
                 </div>
             </div>
+        )
+    }
+}
+
+class Led extends Component {
+
+    constructor(props){
+        super(props);
+
+        this.state = {
+            activated: false,
+            color: this.props.color,
+        }
+    }
+
+    getActivatedClass() {
+        return this.state.activated ? "activated " : "";
+    }
+
+    getColorClass() {
+        return `led-${this.state.color} `;
+    }
+
+    render() {
+        return (
+            <div className="led-container">
+                <div className="led" className={this.getActivatedClass() + this.getColorClass()} >
+                </div>
+            </div>
+            
         )
     }
 }

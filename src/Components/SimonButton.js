@@ -6,8 +6,25 @@ export default class SimonButton extends Component {
         super(props);
 
         this.state = {
-            highlighted: false,
+            playing: this.props.playing,
+            color: this.props.color,
         }
+    }
+
+    getPlayingClass() {
+        return this.state.playing ? "simon-button-playing" : "";
+    }
+
+    getColorClass() {
+        return `simon-button-${this.state.color}`;
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.setState( {
+            ...this.state,
+            playing: nextProps.playing,
+            color: nextProps.color,
+        } );
     }
 
     handleClick(e) {
@@ -18,7 +35,7 @@ export default class SimonButton extends Component {
 
     render() {
         return (
-            <div className="simon-button-container">
+            <div className="simon-button-container" className={this.getPlayingClass()} className={this.getColorClass()} >
                 <button onClick={this.handleClick.bind(this)}>{this.props.value}</button>
             </div>
         )

@@ -6,7 +6,7 @@ export const audioSources = [   "https://s3.amazonaws.com/freecodecamp/simonSoun
                                 "https://s3.amazonaws.com/freecodecamp/simonSound4.mp3" ];
 
 
-export function processInput(input, order, stepN, strict) {
+export function processInput(input, order, stepN, strict, callBackPlayingAudio) {
     console.log(input, order, stepN, strict);  
     //Si gano (Apreto todos los botones), reseteo input y genero nuevo order
     if( order.every( (e,i) => e === input[i]) ) {
@@ -23,7 +23,8 @@ export function processInput(input, order, stepN, strict) {
             order = generateOrder([]);
             stepN = 1;
         }
-        playOrder(order);
+        playError();
+        playOrder(order, callBackPlayingAudio);
     }
 
     return {
@@ -34,14 +35,20 @@ export function processInput(input, order, stepN, strict) {
 }
 
 
-function playOrder(order) {
+function playOrder(order, callBackPlayingAudio) {
     order.forEach( (e,i) => {
         setTimeout( () => {
             console.log("Playing:", e);
+            callBackPlayingAudio(e);
             playAudioSource(audioSources[e]);
         }, 1250+750*(i));
     });
+}
 
+function playError() {
+    audioSources.forEach( (s) => {
+        playAudioSource(s);
+    });
 }
 
 function playAudioSource(audioSource) {
