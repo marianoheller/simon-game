@@ -48,10 +48,10 @@ export default class Simon extends Component {
         })
     }
 
-    playingAudioSource(srcIndex) {
+    playingAudioSource(srcIndex, estado=true) {
         this.setState( {
             ...this.state,
-            playingAudioSource: srcIndex,
+            playingAudioSource: estado ? srcIndex : false,
         })
     }
 
@@ -93,7 +93,7 @@ export default class Simon extends Component {
             value={i} 
             color={colors[i]}
             audioSrc={audioSources[i]}
-            playing={ playingAudioSource===i }
+            playing={ this.state.playingAudioSource===i }
             onInput={this.handleInput.bind(this)}
         ></SimonButton>);
 

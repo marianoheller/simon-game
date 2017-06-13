@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './SimonButton.css';
 
 export default class SimonButton extends Component {
 
@@ -11,12 +12,11 @@ export default class SimonButton extends Component {
         }
     }
 
-    getPlayingClass() {
-        return this.state.playing ? "simon-button-playing" : "";
-    }
-
-    getColorClass() {
-        return `simon-button-${this.state.color}`;
+    getButtonClass() {
+        let ret = "simon-button-container ";
+        ret +=  this.state.playing ? "simon-button-playing " : " ";
+        ret += `simon-button-${this.state.color} `;
+        return ret;
     }
 
     componentWillReceiveProps(nextProps) {
@@ -27,16 +27,28 @@ export default class SimonButton extends Component {
         } );
     }
 
+    offPlayingState() {
+        this.setState( {
+            ...this.state,
+            playing: false,
+        });
+    }
+
     handleClick(e) {
         const { audioSrc, onInput, value } = this.props;
         (new Audio(audioSrc)).play();
+        this.setState( {
+            ...this.state,
+            playing: true,
+        } );
+        setTimeout( this.offPlayingState.bind(this), 500);
         onInput(value);
     }
 
     render() {
         return (
-            <div className="simon-button-container" className={this.getPlayingClass()} className={this.getColorClass()} >
-                <button onClick={this.handleClick.bind(this)}>{this.props.value}</button>
+            <div className={this.getButtonClass()} >
+                <button onClick={this.handleClick.bind(this)}>{this.props.value} - {this.props.color}</button>
             </div>
         )
     }

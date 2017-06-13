@@ -7,13 +7,13 @@ export const audioSources = [   "https://s3.amazonaws.com/freecodecamp/simonSoun
 
 
 export function processInput(input, order, stepN, strict, callBackPlayingAudio) {
-    console.log(input, order, stepN, strict);  
+    //console.log(input, order, stepN, strict);  
     //Si gano (Apreto todos los botones), reseteo input y genero nuevo order
     if( order.every( (e,i) => e === input[i]) ) {
         input.splice(0,input.length);
         order =  generateOrder(order);
         stepN++;
-        playOrder(order);
+        playOrder(order, callBackPlayingAudio);
     }
     //Si le pifio a la tecla, reseteo input pero no hago nada con el order
     //Si es strict tmb reseteo orden y steps
@@ -38,9 +38,11 @@ export function processInput(input, order, stepN, strict, callBackPlayingAudio) 
 function playOrder(order, callBackPlayingAudio) {
     order.forEach( (e,i) => {
         setTimeout( () => {
-            console.log("Playing:", e);
             callBackPlayingAudio(e);
             playAudioSource(audioSources[e]);
+            setTimeout( () => {
+                callBackPlayingAudio(e, false);
+            }, 500)
         }, 1250+750*(i));
     });
 }
