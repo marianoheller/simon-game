@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
-import { StartButton, OnOffButton, StrictButton, StepCounter } from './ControlGadgets';
+import { StartButton, OnOffButton, StrictButton, ScoreCounter } from './ControlGadgets';
 
 
 export default class ControlBoard extends Component {
     render() {
-        const { strict, isOn, isStarted } = this.props.boardState;
+        const { isOn, score } = this.props.gameState;
         return (
             <div className="pure-g">
                 <div className="pure-u-1">
-                    <StepCounter disabled={!isOn} step={this.props.step}></StepCounter>
-                    <OnOffButton onOnOff={this.props.handlers.onOnOff}></OnOffButton>
-                    <StartButton disabled={!isOn} onStart={this.props.handlers.onStart}></StartButton>
-                    <StrictButton disabled={!isOn} onStrict={this.props.handlers.onStrict}></StrictButton>
+                    <ScoreCounter disabled={!isOn} score={score}></ScoreCounter>
+                    <OnOffButton onOnOff={this.props.widgetHandlers.onOnOff}></OnOffButton>
+                    <StartButton disabled={!isOn} onStart={this.props.widgetHandlers.onStart}></StartButton>
+                    <StrictButton disabled={!isOn} onStrict={this.props.widgetHandlers.onStrict}></StrictButton>
                 </div>
             </div>
         )

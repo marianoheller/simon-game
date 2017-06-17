@@ -1,74 +1,152 @@
 import React, { Component } from 'react';
-import SimonButton from './SimonButton';
+import Buttonera from './Buttonera';
 import ControlBoard from './ControlBoard';
-import {generateOrder, audioSources, processInput } from './SimonEngine';
-
-const colors = [
-    "red",
-    "blue",
-    "green",
-    "yellow"
-];
+import {generateOrder, processInput, playAudioSource, playOrder } from './SimonEngine';
 
 
-export default class Simon extends Component {
+
+const initState = {
+    game: {
+        score: "",
+        singing: false,
+        isStarted: false,
+        strictMode: false,
+        isOn: false,
+    },
+    match: {
+        currentOrder: generateOrder([]),
+        currentInput: [],
+    },
+    colors : {
+        red: {
+            colorClass: "red",
+            audioSource: "https://s3.amazonaws.com/freecodecamp/simonSound1.mp3",
+        },
+        blue: {
+            colorClass: "blue",
+            audioSource: "https://s3.amazonaws.com/freecodecamp/simonSound2.mp3",
+        },
+        green: {
+            colorClass: "green",
+            audioSource: "https://s3.amazonaws.com/freecodecamp/simonSound3.mp3",
+        },
+        yellow: {
+            colorClass: "yellow",
+            audioSource: "https://s3.amazonaws.com/freecodecamp/simonSound4.mp3",
+        },
+    }
+}
+
+
+export default class SimonContainer extends Component {
 
     constructor(props) {
         super(props);
 
-        this.state = {
-            counterStep: 1,
-            currentOrder: generateOrder([]),
-            currentInput: [],
-            playingAudioSource: false,
-            strictMode: false,
-            isOn: false,
-            isStarted: false,
-        }
+        this.state = initState;
     }
 
     toggleOn() {
         this.setState( {
             ...this.state,
-            isOn: !this.state.isOn
+            game: {
+                ...this.state.game,
+                isOn: !this.state.game.isOn,
+                score: "",
+            },
+            match: {
+                currentInput: [],
+                currentOrder: generateOrder([])
+            }
         })
     }
 
     toggleStrictMode() {
         this.setState( {
             ...this.state,
-            strictMode: !this.state.strictMode
+            game: {
+                ...this.state.game,
+                strictMode: !this.state.game.strictMode
+            }
         })
     }
 
     toggleIsStarted() {
+        if ( !this.state.game.isStarted ) {
+            const audioSources = Object.keys(this.state.colors).map( (key) => {
+                const { colors }  = this.state;
+                return colors[key].audioSource;
+            });
+            playOrder(this.state.match.currentOrder, audioSources,this.onSinging.bind(this));
+        }
         this.setState( {
             ...this.state,
-            isStarted: !this.state.isStarted
+            game: {
+                ...this.state.game,
+                isStarted: !this.state.game.isStarted,
+                score: !this.state.game.isStarted ? 0 : "",
+            },
+            
         })
     }
 
-    playingAudioSource(srcIndex, estado=true) {
+    onSinging(indexAudio, estado=true) {
         this.setState( {
             ...this.state,
-            playingAudioSource: estado ? srcIndex : false,
+            game: {
+                ...this.state.game,
+                singing: estado ? indexAudio : false,
+            }
         })
     }
 
-    handleInput(value) {
-        const { currentOrder, currentInput, counterStep: stepN, strictMode: strict } = this.state;
-        currentInput.push(value);
+    handleInput(indexButton) {
+        //Ignore if game not started
+        if ( !this.state.game.isStarted ) {   return;   }
+
+        //Assign new input to inputs array
+        const { currentInput, currentOrder } = this.state.match;
+        const { strict,score } = this.state.game;
+        const { colors } = this.state;
+        currentInput.push(indexButton);
+
+        //Play current button and handle state
+        const colorKey = Object.keys(colors)[indexButton];
+        playAudioSource(colors[colorKey].audioSource);
+        this.onSinging(indexButton, true);
+        setTimeout( () => {
+            this.onSinging(indexButton, false);
+        }, 750);
+            
+        //Get new state to be assigned
         const { 
             order: newOrder, 
             input: newInput,
-            step: newStep
-        } = processInput(currentInput, currentOrder, stepN, strict, this.playingAudioSource.bind(this));
+            score: newScore,
+            shouldPlayOrder
+        } = processInput(currentInput, currentOrder, score, strict, this.onSinging.bind(this));
 
+        //Play whole order array if the condition are given
+        const audioSources = Object.keys(this.state.colors).map( (key) => {
+            const { colors }  = this.state;
+            return colors[key].audioSource;
+        });
+        if ( shouldPlayOrder ) {
+            playOrder(newOrder, audioSources,this.onSinging.bind(this));
+        }
+        
+        //And finally assign state
         this.setState( {
             ...this.state,
-            currentInput: newInput,
-            currentOrder: newOrder,
-            counterStep: newStep
+            match: {
+                ...this.state.match,
+                currentInput: newInput,
+                currentOrder: newOrder,
+            },
+            game: {
+                ...this.state.game,
+                score: newScore,
+            },
         });
     }
 
@@ -77,43 +155,55 @@ export default class Simon extends Component {
         const widgetHandlers = {
             onStart: this.toggleIsStarted.bind(this),
             onOnOff: this.toggleOn.bind(this),
-            onStrict: this.toggleStrictMode.bind(this)
+            onStrict: this.toggleStrictMode.bind(this),
+            onInput: this.handleInput.bind(this),
         };
-
-        const boardState = {
-            strict: this.state.strictMode,
-            isOn: this.state.isOn,
-            isStarted: this.state.isStarted,
-        };
-
-        const simonButtons = (new Array(colors.length)).fill(0).map( (e,i) => 
-        <SimonButton 
-            key={`button${i}`} 
-            id={`button${i}`}  
-            value={i} 
-            color={colors[i]}
-            audioSrc={audioSources[i]}
-            playing={ this.state.playingAudioSource===i }
-            onInput={this.handleInput.bind(this)}
-        ></SimonButton>);
+        const colors = { ...this.state.colors };
+        const gameState = { ...this.state.game };
+        const matchState = { ...this.state.match };
 
         return (
+            <Simon 
+            widgetHandlers={widgetHandlers} 
+            gameState={gameState} 
+            matchState={matchState}
+            colors={colors}
+            ></Simon>
+        )
+    }
+}
+
+
+
+
+
+
+
+export class Simon extends Component {
+    render() {
+
+        return(
             <div className="pure-g">
                 <div className="pure-u-1">
                     <div>
-                        {this.state.currentOrder.join(",")}
+                        {this.props.matchState.currentOrder.join(",")}
                     </div>
                     <div>
-                        {this.state.currentInput.join(",")}
+                        {this.props.matchState.currentInput.join(",")}
                     </div>
                     <div>
                         <ControlBoard 
-                        boardState={boardState} 
-                        handlers={widgetHandlers} 
-                        step={this.state.counterStep}>
+                        gameState={this.props.gameState} 
+                        widgetHandlers={this.props.widgetHandlers} >
                         </ControlBoard>
                     </div>
-                    { simonButtons }
+                    <div>
+                        <Buttonera
+                        gameState={this.props.gameState}
+                        widgetHandlers={this.props.widgetHandlers}
+                        colors={this.props.colors}
+                        ></Buttonera>
+                    </div>
                 </div>
             </div>
         )

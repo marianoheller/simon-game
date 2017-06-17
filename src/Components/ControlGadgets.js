@@ -2,16 +2,16 @@ import React, { Component } from 'react';
 import './ControlGadgets.css';
 
 
-export class StepCounter extends Component {
+export class ScoreCounter extends Component {
     render() {
         const { disabled } = this.props;
         return (
-            <div className="pure-g control-button-container">
+            <div className="pure-g control-button-container" disabled={disabled}>
                 <div className="pure-u-1 counter-container">
-                    {this.props.step}
+                    {this.props.score}
                 </div>
                 <div className="pure-u-1">
-                    Count
+                    Score
                 </div>
             </div>
         )
@@ -23,7 +23,7 @@ export class OnOffButton extends Component {
         return (
             <div className="pure-g control-button-container">
                 <div className="pure-u-1">
-                    <button onClick={this.props.onOnOff} className="control-button on-off-button"></button>
+                    <button onClick={this.props.onOnOff} className="pure-button control-button on-off-button"></button>
                 </div>
                 <div className="pure-u-1">
                     On/Off
@@ -39,7 +39,11 @@ export class StartButton extends Component {
         return (
             <div className="pure-g control-button-container">
                 <div className="pure-u-1">
-                    <button onClick={this.props.onStart} className="control-button start-button" disabled={disabled}></button>
+                    <button 
+                    onClick={this.props.onStart} 
+                    className="pure-button control-button start-button" 
+                    disabled={disabled}
+                    ></button>
                 </div>
                 <div className="pure-u-1">
                     Start
@@ -51,10 +55,6 @@ export class StartButton extends Component {
 
 export class StrictButton extends Component {
 
-    getDisabled() {
-        return this.props.disabled ? "disabled" : "";
-    }
-
     render() {
         const { disabled } = this.props;
         return (
@@ -63,7 +63,11 @@ export class StrictButton extends Component {
                     <Led color="red"></Led>
                 </div>
                 <div className="pure-u-1">
-                    <button onClick={this.props.onStrict} className="control-button strict-button" disabled={disabled} ></button>
+                    <button 
+                    onClick={this.props.onStrict} 
+                    className="pure-button control-button strict-button" 
+                    disabled={disabled} 
+                    ></button>
                 </div>
                 <div className="pure-u-1">
                     Strict
@@ -84,18 +88,17 @@ class Led extends Component {
         }
     }
 
-    getActivatedClass() {
-        return this.state.activated ? "activated " : "";
-    }
-
-    getColorClass() {
-        return `led-${this.state.color} `;
+    getClass() {
+        let ret = "led ";
+        ret += this.state.activated ? "activated " : " ";
+        ret += `led-${this.state.color} `;
+        return ret;
     }
 
     render() {
         return (
             <div className="led-container">
-                <div className="led" className={this.getActivatedClass() + this.getColorClass()} >
+                <div className={this.getClass()} >
                 </div>
             </div>
             

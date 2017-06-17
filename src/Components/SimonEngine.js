@@ -1,19 +1,15 @@
 
 
-export const audioSources = [   "https://s3.amazonaws.com/freecodecamp/simonSound1.mp3",
-                                "https://s3.amazonaws.com/freecodecamp/simonSound2.mp3",
-                                "https://s3.amazonaws.com/freecodecamp/simonSound3.mp3",
-                                "https://s3.amazonaws.com/freecodecamp/simonSound4.mp3" ];
 
+export function processInput(input, order, score, strict, onSinging) {
+    let shouldPlayOrder = false;
 
-export function processInput(input, order, stepN, strict, callBackPlayingAudio) {
-    //console.log(input, order, stepN, strict);  
     //Si gano (Apreto todos los botones), reseteo input y genero nuevo order
     if( order.every( (e,i) => e === input[i]) ) {
         input.splice(0,input.length);
         order =  generateOrder(order);
-        stepN++;
-        playOrder(order, callBackPlayingAudio);
+        score++;
+        shouldPlayOrder = true;
     }
     //Si le pifio a la tecla, reseteo input pero no hago nada con el order
     //Si es strict tmb reseteo orden y steps
@@ -21,44 +17,41 @@ export function processInput(input, order, stepN, strict, callBackPlayingAudio) 
         input.splice(0,input.length);
         if( strict ) {
             order = generateOrder([]);
-            stepN = 1;
+            score = 1;
         }
-        playError();
-        playOrder(order, callBackPlayingAudio);
+        shouldPlayOrder = true;
+        // playError();
     }
 
     return {
-        order: order,
-        input: input,
-        step: stepN
+        order,
+        input,
+        score,
+        shouldPlayOrder
     }
 }
 
 
-function playOrder(order, callBackPlayingAudio) {
+export function playOrder(order, audioSources,onSinging) {
     order.forEach( (e,i) => {
         setTimeout( () => {
-            callBackPlayingAudio(e);
+            onSinging(e, true);
             playAudioSource(audioSources[e]);
-            setTimeout( () => {
-                callBackPlayingAudio(e, false);
-            }, 500)
+            if ( i === order.length-1 ) {
+                setTimeout( () => {
+                    onSinging(e, false);
+                }, 750);
+            }
         }, 1250+750*(i));
     });
 }
 
-function playError() {
-    audioSources.forEach( (s) => {
-        playAudioSource(s);
-    });
-}
 
-function playAudioSource(audioSource) {
+export function playAudioSource(audioSource) {
     (new Audio(audioSource)).play();
 }
 
-export function generateOrder(currentOrder) {
-    currentOrder.push( Math.floor( Math.random() * audioSources.length ) );
-    //return (new Array(counterStep)).fill(0).map( (e,i) => Math.floor( Math.random() * audioSources.length ));
+export function generateOrder(currentOrder, colorsLength=4) {
+    currentOrder.push( Math.floor( Math.random() * colorsLength ) );
     return currentOrder;
 }
