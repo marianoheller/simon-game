@@ -37,11 +37,14 @@ export function playOrder(order, audioSources,onSinging) {
         setTimeout( () => {
             onSinging(e, true);
             playAudioSource(audioSources[e]);
-            if ( i === order.length-1 ) {
-                setTimeout( () => {
-                    onSinging(e, false);
-                }, 750);
-            }
+            // if ( i === order.length-1 ) {
+            //     setTimeout( () => {
+            //         onSinging(e, false);
+            //     }, 750);
+            // }
+            setTimeout( () => {
+                onSinging(e, false);
+            }, 400);
         }, 1250+750*(i));
     });
 }

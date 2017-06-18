@@ -18,21 +18,21 @@ const initState = {
         currentInput: [],
     },
     colors : {
-        red: {
-            colorClass: "red",
-            audioSource: "https://s3.amazonaws.com/freecodecamp/simonSound1.mp3",
-        },
-        blue: {
-            colorClass: "blue",
-            audioSource: "https://s3.amazonaws.com/freecodecamp/simonSound2.mp3",
-        },
         green: {
             colorClass: "green",
             audioSource: "https://s3.amazonaws.com/freecodecamp/simonSound3.mp3",
         },
+        red: {
+            colorClass: "red",
+            audioSource: "https://s3.amazonaws.com/freecodecamp/simonSound1.mp3",
+        },
         yellow: {
             colorClass: "yellow",
             audioSource: "https://s3.amazonaws.com/freecodecamp/simonSound4.mp3",
+        },
+        blue: {
+            colorClass: "blue",
+            audioSource: "https://s3.amazonaws.com/freecodecamp/simonSound2.mp3",
         },
     }
 }

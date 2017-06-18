@@ -13,7 +13,12 @@
   font-family: 'Open 24 Display St', sans-serif !important;
 }
 
+.led-container {
+  text-align: center;
+}
+
 .led {
+  margin: 0 auto;
   width: 10px;
   height: 10px;
   border-radius: 50%;
@@ -21,5 +26,9 @@
 }
 
 .led-red {
-  background-color: rgb(180,0,0);
+  background-color: #990000;
+}
+
+.led-red-activated {
+  background-color: #ff0000;
 }

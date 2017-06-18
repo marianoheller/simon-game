@@ -15,8 +15,14 @@ export default class Buttonera extends Component{
             onInput={ this.props.widgetHandlers.onInput }
         ></SimonButtonContainer>);
         return(
-            <div>
-                {simonButtons}
+            <div className="pure-g">
+                <div className="pure-u-3-24"></div>
+                <div className="pure-u-18-24">
+                    <div className="pure-g simon-buttons-container">
+                        {simonButtons}
+                    </div>
+                </div>
+                <div className="pure-u-3-24"></div>
             </div>
         )
     }
@@ -74,8 +80,25 @@ export class SimonButton extends Component {
 
     getButtonClass() {
         let ret = "simon-button-container ";
-        ret +=  this.props.playing ? "simon-button-playing " : " ";
+        ret +=  this.props.playing ? `simon-button-${this.props.className}-playing ` : " ";
         ret += `simon-button-${this.props.className} `;
+        return ret;
+    }
+
+    getContainerDivClass() {
+        let ret = "pure-u-1-2 ";
+        switch (this.props.className) {
+            case "red":
+            case "blue":
+                ret += " button-container-align-left";
+                break;
+            case "green":
+            case "yellow":
+                ret += " button-container-align-right";
+                break;
+            default:
+                break;
+        }
         return ret;
     }
 
@@ -89,11 +112,13 @@ export class SimonButton extends Component {
     render() {
         const { disabled } = this.props;
         return (
-            <div 
-            className={this.getButtonClass()}
-            onClick={this.handleClick.bind(this)}
-            disabled={disabled}>
-                {this.props.index} - {this.props.color}
+            <div className={this.getContainerDivClass()}>
+                <div 
+                className={this.getButtonClass()}
+                onClick={this.handleClick.bind(this)}
+                disabled={disabled}>
+                    {/*{this.props.index} - {this.props.color}*/}
+                </div>
             </div>
         )
     }

@@ -1,35 +1,73 @@
-.simon-button-container {
-    background-color: white;
-    color: black;
-    cursor: pointer;
-    user-select: none;
-
+.simon-buttons-container {
+    margin: 20px;
+    padding: 20px;  
+    /*border-radius: 50%;
     border-style: solid;
-    border-width: 1px;
-    border-color: black;
-    border-radius: 3px;
-
-    margin: 10px;
-    padding: 5px;
+    border-color: #222222;
+    background-color: #444444;*/
 }
 
-.simon-button-playing {
-    background-color: black;
-    color: white;
+.simon-button-container {
+    cursor: pointer;
+    user-select: none;
+}
+
+.button-container-align-right {
+    text-align: right;
+    height: 150px;
+}
+
+.button-container-align-left {
+    text-align: left;
+    height: 150px;
 }
 
 .simon-button-red {
-    background-color: red;
+    border: 150px solid;
+    border-color: #880000;
+    border-bottom: none;
+    border-left: none;
+    border-top-right-radius: 150px;
 }
 
 .simon-button-blue {
-    background-color: blue;
+    border: 150px solid;
+    border-color: #000088;
+    border-top: none;
+    border-left: none;
+    border-bottom-right-radius: 150px;
 }
 
 .simon-button-green {
-    background-color: green;
+    border: 150px solid;
+    border-color: #008800;
+    border-bottom: none;
+    border-right: none;
+    border-top-left-radius: 150px;
 }
 
 .simon-button-yellow {
-    background-color: yellow;
+    border: 150px solid;
+    border-color: #888800;
+    border-top: none;
+    border-right: none;
+    border-bottom-left-radius: 150px;
 }
+
+.simon-button-red-playing {
+    border-color: #ff0000;
+}
+
+.simon-button-blue-playing {
+    border-color: #0000ff;
+}
+
+.simon-button-green-playing {
+    border-color: #00ff00;
+}
+
+.simon-button-yellow-playing {
+    border-color: #ffff00;
+}
+
+
