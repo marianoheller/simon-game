@@ -18,13 +18,11 @@ export default class Buttonera extends Component{
         ></SimonButtonContainer>);
         return(
             <div className="pure-g">
-                <div className="pure-u-3-24"></div>
-                <div className="pure-u-18-24">
+                <div className="pure-u-1">
                     <div className="pure-g simon-buttons-container">
                         {simonButtons}
                     </div>
                 </div>
-                <div className="pure-u-3-24"></div>
             </div>
         )
     }

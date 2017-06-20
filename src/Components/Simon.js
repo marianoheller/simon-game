@@ -3,6 +3,7 @@ import Buttonera from './Buttonera';
 import ControlBoard from './ControlBoard';
 import {generateOrder, processInput, playAudioSource, playOrder } from './SimonEngine';
 
+import "./Simon.css";
 
 
 const initState = {
@@ -107,7 +108,7 @@ export default class SimonContainer extends Component {
 
         //Assign new input to inputs array
         const { currentInput, currentOrder } = this.state.match;
-        const { strict,score } = this.state.game;
+        const { strictMode, score } = this.state.game;
         const { colors } = this.state;
         currentInput.push(indexButton);
 
@@ -125,7 +126,7 @@ export default class SimonContainer extends Component {
             input: newInput,
             score: newScore,
             shouldPlayOrder
-        } = processInput(currentInput, currentOrder, score, strict, this.onSinging.bind(this));
+        } = processInput(currentInput, currentOrder, score, strictMode, this.onSinging.bind(this));
 
         //Play whole order array if the condition are given
         const audioSources = Object.keys(this.state.colors).map( (key) => {
@@ -186,19 +187,13 @@ export class Simon extends Component {
         return(
             <div className="pure-g">
                 <div className="pure-u-1">
-                    {/*<div>
-                        {this.props.matchState.currentOrder.join(",")}
-                    </div>
-                    <div>
-                        {this.props.matchState.currentInput.join(",")}
-                    </div>*/}
                     <div>
                         <ControlBoard 
                         gameState={this.props.gameState} 
                         widgetHandlers={this.props.widgetHandlers} >
                         </ControlBoard>
                     </div>
-                    <div>
+                    <div className="simon-container">
                         <Buttonera
                         gameState={this.props.gameState}
                         widgetHandlers={this.props.widgetHandlers}
