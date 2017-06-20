@@ -1,12 +1,16 @@
 
 .control-button {
   border-radius: 50%;
-  width: 30px;
-  height: 30px;
+  width: 20px;
+  height: 20px;
 }
 
 .control-button-container {
   display: inline-block;
+}
+
+.control-button-container > div {
+  font-family: cursive;
 }
 
 .counter-container {
@@ -19,16 +23,39 @@
 
 .led {
   margin: 0 auto;
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   background-color: black;
 }
 
 .led-red {
-  background-color: #990000;
+  background-color: #770000;
 }
 
 .led-red-activated {
   background-color: #ff0000;
+}
+
+.control-button-top {
+  height: 15px;
+}
+
+.control-button-middle {
+  height: 20px;
+}
+
+.control-button-bottom {
+  height: 20px;
+}
+
+.score-counter {
+  height: 30px;
+  font-size: 2em;
+  color: red;
+
+  border-radius: 2px;
+  border-style: solid;
+  border-color: black;
+  background-color: #330000;
 }

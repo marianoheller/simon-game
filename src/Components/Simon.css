@@ -12,3 +12,9 @@
     -moz-box-shadow: 10px 10px 62px -6px rgba(0,0,0,0.75);
     box-shadow: 10px 10px 62px -6px rgba(0,0,0,0.75);
 }
+
+.buttonera-container {
+    position: relative;
+    top: -130px;
+    z-index: 3;
+}

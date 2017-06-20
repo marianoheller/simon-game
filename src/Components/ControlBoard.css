@@ -1,0 +1,26 @@
+
+
+.brand {
+    font-family: 'Alfa Slab One', cursive !important;
+    color: white;
+    user-select: none;
+    cursor: default;
+    height: 55px; 
+    margin: 0px;
+}
+
+
+.control-board-container {
+    color: white;
+    position: relative;
+    top: 125px;
+    height: 130px;
+    z-index: 5;
+
+}
+
+.control-board-buttons-container {
+    font-size: small;
+    padding: 0 15px;
+}
+

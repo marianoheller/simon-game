@@ -1,11 +1,3 @@
-.simon-buttons-container {
-    margin: 20px;
-    padding: 20px;  
-    /*border-radius: 50%;
-    border-style: solid;
-    border-color: #222222;
-    background-color: #444444;*/
-}
 
 .simon-button-container {
     user-select: none;
@@ -14,63 +6,3 @@
 .simon-button-container-enabled {
     cursor: pointer;
 }
-
-.button-container-align-right {
-    text-align: right;
-    height: 150px;
-}
-
-.button-container-align-left {
-    text-align: left;
-    height: 150px;
-}
-
-.simon-button-red {
-    border: 150px solid;
-    border-color: #880000;
-    border-bottom: none;
-    border-left: none;
-    border-top-right-radius: 150px;
-}
-
-.simon-button-blue {
-    border: 150px solid;
-    border-color: #000088;
-    border-top: none;
-    border-left: none;
-    border-bottom-right-radius: 150px;
-}
-
-.simon-button-green {
-    border: 150px solid;
-    border-color: #008800;
-    border-bottom: none;
-    border-right: none;
-    border-top-left-radius: 150px;
-}
-
-.simon-button-yellow {
-    border: 150px solid;
-    border-color: #888800;
-    border-top: none;
-    border-right: none;
-    border-bottom-left-radius: 150px;
-}
-
-.simon-button-red-playing {
-    border-color: #ff0000;
-}
-
-.simon-button-blue-playing {
-    border-color: #0000ff;
-}
-
-.simon-button-green-playing {
-    border-color: #00ff00;
-}
-
-.simon-button-yellow-playing {
-    border-color: #ffff00;
-}
-
-

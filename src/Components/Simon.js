@@ -3,6 +3,7 @@ import Buttonera from './Buttonera';
 import ControlBoard from './ControlBoard';
 import {generateOrder, processInput, playAudioSource, playOrder } from './SimonEngine';
 
+
 import "./Simon.css";
 
 
@@ -20,19 +21,23 @@ const initState = {
     },
     colors : {
         green: {
-            colorClass: "green",
+            colorDown: "#008800",
+            colorUp: "#00ff00",
             audioSource: "https://s3.amazonaws.com/freecodecamp/simonSound3.mp3",
         },
         red: {
-            colorClass: "red",
+            colorDown: "#880000",
+            colorUp: "#ff0000",
             audioSource: "https://s3.amazonaws.com/freecodecamp/simonSound1.mp3",
         },
         yellow: {
-            colorClass: "yellow",
+            colorDown: "#888800",
+            colorUp: "#ffff00",
             audioSource: "https://s3.amazonaws.com/freecodecamp/simonSound4.mp3",
         },
         blue: {
-            colorClass: "blue",
+            colorDown: "#000088",
+            colorUp: "#0000ff",
             audioSource: "https://s3.amazonaws.com/freecodecamp/simonSound2.mp3",
         },
     }
@@ -188,17 +193,22 @@ export class Simon extends Component {
             <div className="pure-g">
                 <div className="pure-u-1">
                     <div>
+                        
+                    </div>
+                    <div className="simon-container">
                         <ControlBoard 
                         gameState={this.props.gameState} 
                         widgetHandlers={this.props.widgetHandlers} >
                         </ControlBoard>
-                    </div>
-                    <div className="simon-container">
+
                         <Buttonera
                         gameState={this.props.gameState}
                         widgetHandlers={this.props.widgetHandlers}
                         colors={this.props.colors}
                         ></Buttonera>
+    
+                        
+                        
                     </div>
                 </div>
             </div>

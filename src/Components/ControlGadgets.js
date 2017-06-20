@@ -6,12 +6,14 @@ export class ScoreCounter extends Component {
     render() {
         const { disabled } = this.props;
         return (
-            <div className="pure-g control-button-container" disabled={disabled}>
-                <div className="pure-u-1 counter-container">
-                    {this.props.score}
-                </div>
-                <div className="pure-u-1">
-                    Score
+            <div className="pure-u-6-24 control-button-container">
+                <div className="pure-g" disabled={disabled}>
+                    <div className="pure-u-1 control-button-middle score-counter">
+                        {this.props.score}
+                    </div>
+                    <div className="pure-u-1 control-button-bottom">
+                        Score
+                    </div>
                 </div>
             </div>
         )
@@ -21,15 +23,17 @@ export class ScoreCounter extends Component {
 export class OnOffButton extends Component {
     render() {
         return (
-            <div className="pure-g control-button-container">
-                <div className="pure-u-1">
-                    <Led color="red" activated={this.props.isOn}></Led>
-                </div>
-                <div className="pure-u-1">
-                    <button onClick={this.props.onOnOff} className="pure-button control-button on-off-button"></button>
-                </div>
-                <div className="pure-u-1">
-                    On/Off
+            <div className="pure-u-6-24 control-button-container">
+                <div className="pure-g">
+                    <div className="pure-u-1 control-button-top">
+                        <Led color="red" activated={this.props.isOn}></Led>
+                    </div>
+                    <div className="pure-u-1 control-button-middle">
+                        <button onClick={this.props.onOnOff} className="pure-button control-button on-off-button"></button>
+                    </div>
+                    <div className="pure-u-1 control-button-bottom">
+                        On/Off
+                    </div>
                 </div>
             </div>
         )
@@ -40,16 +44,20 @@ export class StartButton extends Component {
     render() {
         const { disabled } = this.props;
         return (
-            <div className="pure-g control-button-container">
-                <div className="pure-u-1">
-                    <button 
-                    onClick={this.props.onStart} 
-                    className="pure-button control-button start-button" 
-                    disabled={disabled}
-                    ></button>
-                </div>
-                <div className="pure-u-1">
-                    Start
+            <div className="pure-u-6-24 control-button-container">
+                <div className="pure-g">
+                    <div className="pure-u-1 control-button-top">
+                    </div>
+                    <div className="pure-u-1 control-button-middle">
+                        <button 
+                        onClick={this.props.onStart} 
+                        className="pure-button control-button start-button" 
+                        disabled={disabled}
+                        ></button>
+                    </div>
+                    <div className="pure-u-1 control-button-bottom">
+                        Start
+                    </div>
                 </div>
             </div>
         )
@@ -79,19 +87,21 @@ export class StrictButton extends Component {
     render() {
         const { disabled } = this.props;
         return (
-            <div className="pure-g control-button-container">
-                <div className="pure-u-1">
-                    <Led color="red" activated={this.state.activated}></Led>
-                </div>
-                <div className="pure-u-1">
-                    <button 
-                    onClick={this.handleClick.bind(this)} 
-                    className="pure-button control-button strict-button" 
-                    disabled={disabled} 
-                    ></button>
-                </div>
-                <div className="pure-u-1">
-                    Strict
+            <div className="pure-u-6-24 control-button-container">
+                <div className="pure-g">
+                    <div className="pure-u-1 control-button-top">
+                        <Led color="red" activated={this.state.activated}></Led>
+                    </div>
+                    <div className="pure-u-1 control-button-middle">
+                        <button 
+                        onClick={this.handleClick.bind(this)} 
+                        className="pure-button control-button strict-button" 
+                        disabled={disabled} 
+                        ></button>
+                    </div>
+                    <div className="pure-u-1 control-button-bottom">
+                        Strict
+                    </div>
                 </div>
             </div>
         )

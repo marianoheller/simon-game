@@ -1,51 +1,62 @@
 import React, { Component } from 'react';
+import {Layer, Stage, Arc} from 'react-konva';
 import './Buttonera.css';
 
-export default class Buttonera extends Component{
+const canvasConfig = {
+    stage: {
+        width: 380,
+        height: 380,
+    }
+}
 
+export default class Buttonera extends Component{
+    
     render() {
         const simonButtons = Object.keys(this.props.colors).map( ( keyColor, i) => 
         <SimonButtonContainer 
-            disabled={!this.props.gameState.isOn}
-            isStarted={this.props.gameState.isStarted}
-            key={`button${i}`} 
-            id={`button${i}`}  
-            className={this.props.colors[keyColor].colorClass}
-            index={i}
-            color={keyColor}
-            playing={ this.props.gameState.singing===i }
-            onInput={ this.props.widgetHandlers.onInput }
+        disabled={!this.props.gameState.isOn}
+        isStarted={this.props.gameState.isStarted}
+        key={`button${i}`}
+        colorUp={this.props.colors[keyColor].colorUp}
+        colorDown={this.props.colors[keyColor].colorDown}
+        index={i}
+        color={keyColor}
+        stage = { canvasConfig.stage }
+        playing={ this.props.gameState.singing===i }
+        onInput={ this.props.widgetHandlers.onInput }
         ></SimonButtonContainer>);
+
         return(
-            <div className="pure-g">
-                <div className="pure-u-1">
-                    <div className="pure-g simon-buttons-container">
-                        {simonButtons}
-                    </div>
-                </div>
+            <div className="buttonera-container">
+                <Stage width={canvasConfig.stage.width} height={canvasConfig.stage.height}>
+                    <Layer>
+                        {simonButtons}                
+                    </Layer>
+                </Stage>
             </div>
+            
         )
     }
 }
 
 
 export class SimonButtonContainer extends Component {
-
+    
     constructor(props) {
         super(props);
-
+        
         this.state = {
             playing: props.playing,
         }
     }
-
+    
     componentWillReceiveProps(nextProps) {
         this.setState( {
             ...this.state,
             playing: nextProps.playing,
         })
     }
-
+    
     containerClickHandler() {
         this.setState( {
             ...this.state,
@@ -56,56 +67,39 @@ export class SimonButtonContainer extends Component {
                 ...this.state,
                 playing: false,
             });
-        }, 750);
+        }, 400);
     }
-
+    
     render() {
         return(
             <SimonButton
-            playing={this.state.playing}
-            color={this.props.color}
-            index={this.props.index}
-            className={this.props.className}
-            disabled={this.props.disabled}
-            isStarted={this.props.isStarted}
-            onInput={this.props.onInput}
-            containerClickHandler = { this.containerClickHandler.bind(this)}
-            ></SimonButton>
+                playing={this.state.playing}
+                stage = {this.props.stage}
+                color={this.props.color}
+                index={this.props.index}
+                colorUp={this.props.colorUp}
+                colorDown={this.props.colorDown}
+                disabled={this.props.disabled}
+                isStarted={this.props.isStarted}
+                onInput={this.props.onInput}
+                containerClickHandler = { this.containerClickHandler.bind(this)}
+                ></SimonButton>
         )
     }
 }
 
 
 export class SimonButton extends Component {
-
-
-    getButtonClass() {
-        let ret = "simon-button-container ";
-        ret += this.props.isStarted ? "simon-button-container-enabled " : " ";
-        ret +=  this.props.playing ? `simon-button-${this.props.className}-playing ` : " ";
-        ret += `simon-button-${this.props.className} `;
-        return ret;
+    
+    constructor(props) {
+        super(props);
+        this.state = {
+            color: props.colorDown
+        };
+        this.handleClick = this.handleClick.bind(this);
     }
-
-    getContainerDivClass() {
-        let ret = "pure-u-1-2 ";
-        switch (this.props.className) {
-            case "red":
-            case "blue":
-                ret += " button-container-align-left";
-                break;
-            case "green":
-            case "yellow":
-                ret += " button-container-align-right";
-                break;
-            default:
-                break;
-        }
-        return ret;
-    }
-
-
-    handleClick(e) {
+    
+    handleClick() {
         if ( this.props.isStarted ) {
             const { index, onInput, containerClickHandler } = this.props;
             containerClickHandler();
@@ -114,16 +108,23 @@ export class SimonButton extends Component {
     }
 
     render() {
-        const { disabled } = this.props;
+        const { stage, index, playing, colorDown, colorUp } = this.props;
+        const color = playing ? colorUp : colorDown;
         return (
-            <div className={this.getContainerDivClass()}>
-                <div 
-                className={this.getButtonClass()}
-                onClick={this.handleClick.bind(this)}
-                disabled={disabled}>
-                    {/*{this.props.index} - {this.props.color}*/}
-                </div>
-            </div>
-        )
+            <Arc
+                x= {stage.width/2}
+                y= {stage.height/2}
+                innerRadius= {stage.height/4}
+                outerRadius= {stage.height/2}
+                angle= {90}
+                rotation = {360-(90*index)}
+                onClick= {this.handleClick}
+                fill= {color}
+                stroke= 'black'
+                strokeWidth= {4}
+                />
+        );
     }
 }
+
+
