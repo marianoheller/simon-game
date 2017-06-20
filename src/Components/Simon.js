@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Buttonera from './Buttonera';
 import ControlBoard from './ControlBoard';
-import {generateOrder, processInput, playAudioSource, playOrder } from './SimonEngine';
+import {generateOrder, processInput, playAudioSource, playOrder, playError } from './SimonEngine';
 
 
 import "./Simon.css";
@@ -126,12 +126,19 @@ export default class SimonContainer extends Component {
         }, 750);
             
         //Get new state to be assigned
-        const { 
+        let { 
             order: newOrder, 
             input: newInput,
             score: newScore,
-            shouldPlayOrder
+            shouldPlayOrder,
+            errorHappened,
         } = processInput(currentInput, currentOrder, score, strictMode, this.onSinging.bind(this));
+
+        //Evaluate if player reached score 20
+        if( newScore >= 20 ) {
+             newScore = 0;
+             newOrder = generateOrder([]);             
+        }
 
         //Play whole order array if the condition are given
         const audioSources = Object.keys(this.state.colors).map( (key) => {
@@ -139,7 +146,15 @@ export default class SimonContainer extends Component {
             return colors[key].audioSource;
         });
         if ( shouldPlayOrder ) {
-            playOrder(newOrder, audioSources,this.onSinging.bind(this));
+            if ( errorHappened ) {
+                playError(audioSources);
+                setTimeout( () => {
+                    playOrder(newOrder, audioSources,this.onSinging.bind(this));
+                }, 500);
+            }
+            else {
+                playOrder(newOrder, audioSources,this.onSinging.bind(this));
+            }
         }
         
         //And finally assign state

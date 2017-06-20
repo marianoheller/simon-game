@@ -6,7 +6,7 @@ import './ControlBoard.css';
 
 export default class ControlBoard extends Component {
     render() {
-        const { isOn, score, strictMode } = this.props.gameState;
+        const { isOn, score, strictMode, isStarted } = this.props.gameState;
         return (
             <div className="pure-g">
                 <div className="pure-u-6-24"></div>
@@ -15,7 +15,7 @@ export default class ControlBoard extends Component {
                         <div className="pure-u-1 brand">
                             <h1 className="brand">
                                 Simon
-                                <span class="small">®</span>
+                                <span className="small">®</span>
                             </h1>
                         </div>
                         <div className="pure-u-1 control-board-buttons-container">
@@ -32,6 +32,7 @@ export default class ControlBoard extends Component {
 
                             <StartButton 
                             disabled={!isOn} 
+                            isStarted={isStarted}
                             onStart={this.props.widgetHandlers.onStart}
                             ></StartButton>
 

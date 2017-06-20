@@ -3,6 +3,7 @@
 
 export function processInput(input, order, score, strict, onSinging) {
     let shouldPlayOrder = false;
+    let errorHappened = false;
 
     //Si gano (Apreto todos los botones), reseteo input y genero nuevo order
     if( order.every( (e,i) => e === input[i]) ) {
@@ -20,6 +21,7 @@ export function processInput(input, order, score, strict, onSinging) {
             score = 1;
         }
         shouldPlayOrder = true;
+        errorHappened = true;
         // playError();
     }
 
@@ -27,7 +29,8 @@ export function processInput(input, order, score, strict, onSinging) {
         order,
         input,
         score,
-        shouldPlayOrder
+        shouldPlayOrder,
+        errorHappened,
     }
 }
 
@@ -37,15 +40,16 @@ export function playOrder(order, audioSources,onSinging) {
         setTimeout( () => {
             onSinging(e, true);
             playAudioSource(audioSources[e]);
-            // if ( i === order.length-1 ) {
-            //     setTimeout( () => {
-            //         onSinging(e, false);
-            //     }, 750);
-            // }
             setTimeout( () => {
                 onSinging(e, false);
             }, 400);
         }, 1250+750*(i));
+    });
+}
+
+export function playError(audioSources) {
+    audioSources.forEach( (audioSource) => {
+        playAudioSource(audioSource);
     });
 }
 

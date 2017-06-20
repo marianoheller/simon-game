@@ -46,12 +46,14 @@
 }
 
 .control-button-bottom {
+  font-family: 'Oswald', sans-serif !important;
   height: 20px;
 }
 
 .score-counter {
   height: 30px;
-  font-size: 2em;
+  font-size: 30px;
+  font-family: 'VT323', monospace !important;
   color: red;
 
   border-radius: 2px;

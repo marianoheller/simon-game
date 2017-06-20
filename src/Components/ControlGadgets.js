@@ -47,6 +47,7 @@ export class StartButton extends Component {
             <div className="pure-u-6-24 control-button-container">
                 <div className="pure-g">
                     <div className="pure-u-1 control-button-top">
+                        <Led color="red" activated={this.props.isStarted}></Led>
                     </div>
                     <div className="pure-u-1 control-button-middle">
                         <button 
