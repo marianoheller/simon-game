@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import './Buttonera.css';
 
 export default class Buttonera extends Component{
+
     render() {
         const simonButtons = Object.keys(this.props.colors).map( ( keyColor, i) => 
         <SimonButtonContainer 
             disabled={!this.props.gameState.isOn}
+            isStarted={this.props.gameState.isStarted}
             key={`button${i}`} 
             id={`button${i}`}  
             className={this.props.colors[keyColor].colorClass}
@@ -67,6 +69,7 @@ export class SimonButtonContainer extends Component {
             index={this.props.index}
             className={this.props.className}
             disabled={this.props.disabled}
+            isStarted={this.props.isStarted}
             onInput={this.props.onInput}
             containerClickHandler = { this.containerClickHandler.bind(this)}
             ></SimonButton>
@@ -80,6 +83,7 @@ export class SimonButton extends Component {
 
     getButtonClass() {
         let ret = "simon-button-container ";
+        ret += this.props.isStarted ? "simon-button-container-enabled " : " ";
         ret +=  this.props.playing ? `simon-button-${this.props.className}-playing ` : " ";
         ret += `simon-button-${this.props.className} `;
         return ret;
@@ -104,9 +108,11 @@ export class SimonButton extends Component {
 
 
     handleClick(e) {
-        const { index, onInput, containerClickHandler } = this.props;
-        containerClickHandler();
-        onInput(index);
+        if ( this.props.isStarted ) {
+            const { index, onInput, containerClickHandler } = this.props;
+            containerClickHandler();
+            onInput(index);
+        }
     }
 
     render() {

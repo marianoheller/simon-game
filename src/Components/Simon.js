@@ -53,12 +53,13 @@ export default class SimonContainer extends Component {
                 ...this.state.game,
                 isOn: !this.state.game.isOn,
                 score: "",
+                strictMode: false,
             },
             match: {
                 currentInput: [],
                 currentOrder: generateOrder([])
             }
-        })
+        });
     }
 
     toggleStrictMode() {
@@ -185,12 +186,12 @@ export class Simon extends Component {
         return(
             <div className="pure-g">
                 <div className="pure-u-1">
-                    <div>
+                    {/*<div>
                         {this.props.matchState.currentOrder.join(",")}
                     </div>
                     <div>
                         {this.props.matchState.currentInput.join(",")}
-                    </div>
+                    </div>*/}
                     <div>
                         <ControlBoard 
                         gameState={this.props.gameState} 

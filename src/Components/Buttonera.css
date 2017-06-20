@@ -8,8 +8,11 @@
 }
 
 .simon-button-container {
-    cursor: pointer;
     user-select: none;
+}
+
+.simon-button-container-enabled {
+    cursor: pointer;
 }
 
 .button-container-align-right {

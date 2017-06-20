@@ -23,6 +23,9 @@ export class OnOffButton extends Component {
         return (
             <div className="pure-g control-button-container">
                 <div className="pure-u-1">
+                    <Led color="red" activated={this.props.isOn}></Led>
+                </div>
+                <div className="pure-u-1">
                     <button onClick={this.props.onOnOff} className="pure-button control-button on-off-button"></button>
                 </div>
                 <div className="pure-u-1">
@@ -59,15 +62,17 @@ export class StrictButton extends Component {
         super(props);
 
         this.state = {
-            activated: !this.props.disabled,
+            activated: this.props.strictMode,
         }
     }
 
-    handleClick() {
+    componentWillReceiveProps(nextProps) {
         this.setState( {
             ...this.state,
-            activated: !this.state.activated,
+            activated: nextProps.strictMode,
         })
+    }
+    handleClick() {
         this.props.onStrict()
     }
 
